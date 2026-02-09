@@ -2,9 +2,11 @@
 
 clear
 
+echo -e "\n--- Slackware Linux Kernel Backup ---"
+
 # 1. Verificação de root
 if [ "$EUID" -ne 0 ]; then
-  echo "Erro: Este script precisa de privilégios de ROOT."
+  echo -e "\n[INFO]: Este script precisa de privilégios de ROOT.\n"
   exit 1
 fi
 
