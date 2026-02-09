@@ -1,35 +1,33 @@
-## Slackware setup for programming and hacking!
+## Slackware setup for programming and kernel hacking!
 
 ### 1. Adicionando usuário e setando permissões
 ```bash
-adduser && vim /etc/sudoers
+useradd -m -g users -G wheel,audio,video -s /bin/bash ocram
+passwd ocram
 ```
-### 1. Configuracao do git.
 
+### 1. Configuracao do git.
 ```bash
 # to set your account's default identity.
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 ```
-### 2. Conectando a uma rede wireless via nmcli
 
+### 2. Conectando a uma rede wireless via nmcli
 ```bash
 nmcli device wifi connect "ESSID" password "PASSWORD"
 
 ```
 
 ### 3. Atualizando os pacotes relacionados ao kernel
-
 ```bash
 # Escolha um espelho (mirror) oficial antes de atualizar
 vim /etc/slackpkg/mirrors && slackpkg update
-
 # Atualizando os componentes do Kernel
 slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
 ```
 
 ### 4. Gerando uma chave SSH para o GitHub
-
 ```bash
 ssh-keygen -t ed25519 -C "e-mail@test.com"
 eval "$(ssh-agent -s)"
@@ -38,7 +36,6 @@ ssh -T git@github.com
 ```
 
 ### 5. Gerando o initrd e atualizando o EFI
-
 ```bash
 # Executar o mkinitrd com módulos divididos por barra para facilitar a leitura
 mkinitrd -c -k 5.15.193 -f ext4 -r /dev/nvme0n1p3 \
