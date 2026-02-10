@@ -1,10 +1,8 @@
-```text
 ## Slackware setup for programming and hacking!
 
 ### 1. Adicionando usuário e setando permissões
 ```bash
 adduser && vim /etc/sudoers
-
 ```
 
 ### 2. Conectando a uma rede wireless via nmcli
