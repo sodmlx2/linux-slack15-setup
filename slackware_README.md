@@ -61,9 +61,3 @@ mv general.msg params.msg textmenu-message.msg /boot/efi/EFI/Slackware/
 ```
 
 ```
-
----
-
-**Conseguiu copiar tudo agora? Se precisar de mais algum ajuste no script de backup para esse formato, é só avisar!**
-
-```
