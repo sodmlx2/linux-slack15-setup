@@ -1,11 +1,3 @@
-Entendi perfeitamente! Quando o Markdown é renderizado, os blocos de código somem e fica difícil copiar a "sintaxe bruta".
-
-Vou colocar o conteúdo agora dentro de um **bloco de texto simples**. Assim, você verá os símbolos (como as crases e hashtags) e poderá copiar tudo de uma vez sem que a interface do chat tente "embelezar" o código.
-
----
-
-### Copie o conteúdo abaixo:
-
 ```text
 ## Slackware setup for programming and hacking!
 
