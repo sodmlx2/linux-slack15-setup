@@ -1,2 +1,2 @@
-# linux-guia-slack15
-Um guia para iniciantes no Linux
+# linux-slack15-setup
+Um guia de configuracao para o Slackware Linux.
