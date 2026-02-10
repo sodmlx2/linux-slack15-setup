@@ -20,7 +20,6 @@ vim /etc/slackpkg/mirrors && slackpkg update
 
 # Atualizando os componentes do Kernel
 slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
-
 ```
 
 ### 4. Gerando uma chave SSH para o GitHub
@@ -30,7 +29,6 @@ ssh-keygen -t ed25519 -C "e-mail@test.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ssh -T git@github.com
-
 ```
 
 ### 5. Gerando o initrd e atualizando o EFI
@@ -47,7 +45,6 @@ crc32c_intel:crc32c_generic:ext4 \
 # Copiando para a partição EFI
 cp /boot/vmlinuz-generic-5.15.193 /boot/efi/EFI/Slackware/vmlinuz
 cp /boot/initrd.gz /boot/efi/EFI/Slackware/initrd.gz
-
 ```
 
 ### 6. Ajustando o menu do ELILO
@@ -55,7 +52,3 @@ cp /boot/initrd.gz /boot/efi/EFI/Slackware/initrd.gz
 ```bash
 cd /usr/share/doc/elilo-3.16/examples/textmenu_chooser/
 mv general.msg params.msg textmenu-message.msg /boot/efi/EFI/Slackware/
-
-```
-
-```
