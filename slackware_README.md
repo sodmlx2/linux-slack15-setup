@@ -1,24 +1,27 @@
-## Slackware setup for programming and kernel hacking!
+# linux-slack15-setup
 
-### 1. User!
+# Slackware setup for begging in programming and kernel hacking!
+
+## 1. User!
 ```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash ocram && echo "ocram:slackware" | chpasswd && chage -d 0 ocram
+# to create a initial user
+useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
 
-### 1. Identity!.
+## 1. Identity!.
 ```bash
 # to set your account's default identity.
-git config --global user.email "ocram@example.com"
-git config --global user.name "Ocram"
+git config --global user.email "user@example.com"
+git config --global user.name "username"
 ```
 
-### 2. Wireless.
+## 2. Wireless.
 ```bash
+iwlist wlan0 scan | grep ESSID
 nmcli device wifi connect "ESSID" password "PASSWORD"
-
 ```
 
-### 3. Packages.
+## 3. Packages.
 ```bash
 # Escolha um espelho (mirror) oficial antes de atualizar
 vim /etc/slackpkg/mirrors && slackpkg update
@@ -26,9 +29,9 @@ vim /etc/slackpkg/mirrors && slackpkg update
 slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
 ```
 
-### 4. SSH Keys.
+## 4. SSH Keys.
 ```bash
-ssh-keygen -t ed25519 -C "e-mail@test.com"
+ssh-keygen -t ed25519 -C "user@test.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ssh -T git@github.com
