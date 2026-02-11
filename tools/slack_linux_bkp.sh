@@ -45,7 +45,8 @@ if [[ "$COMPILE_KERNEL" =~ ^[Yy]$ ]]; then
 
     # generating .config file with kernel configurations.
     echo -e "\n[INFO]: Generating Config file."
-    make menuconfig
+    # make localmodconfig
+    # make menuconfig
 
     # Generated image of linux kernel.
     echo -e "[INFO]: Compiling Kernel (bzImage) with $CORES threads."
@@ -210,13 +211,13 @@ echo -e "[INFO] Checking Bootloader..."
 #
 # Check for LILO.
 #
-#if [ -f /etc/lilo.conf ] && [ -x "$(command -v lilo)" ]; then
-#    echo -e "[INFO] LILO detected."
-#    read -r -p "Run 'lilo' to update bootloader? [y/N] " RUN_LILO
-#    if [[ "$RUN_LILO" =~ ^[Yy]$ ]]; then
-#        lilo
-#    fi
-#fi
+if [ -f /etc/lilo.conf ] && [ -x "$(command -v lilo)" ]; then
+    echo -e "[INFO] LILO detected."
+    read -r -p "Run 'lilo' to update bootloader? [y/N] " RUN_LILO
+    if [[ "$RUN_LILO" =~ ^[Yy]$ ]]; then
+        lilo
+    fi
+fi
 
 #
 # Check for ELILO (UEFI).
