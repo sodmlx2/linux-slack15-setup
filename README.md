@@ -1,6 +1,6 @@
 # linux-slack15-setup
 
-# Slackware Kernel Compilation & Backup Utility
+# Slackware Kernel Compilation.
 
 This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to automate the process of compiling, installing, backing up, and packaging a custom Linux Kernel on Slackware systems.
 
@@ -21,14 +21,14 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
 - **Bootloader Update**:  
   Detects and prompts to update your bootloader (LILO, ELILO, or GRUB) to ensure the new kernel is recognized.
 
-## Prerequisites
+## Prerequisites.
 
 - **Root Privileges**: The script must be run as root (or with `sudo`) to write to `/boot`, `/lib/modules`, and update bootloaders.
 - **Kernel Source**: You must have the Linux Kernel source code downloaded and extracted (e.g., in `/usr/src/linux`).
 - **Build Tools**: Ensure you have the necessary development tools installed (gcc, make, ncurses, etc.).
 - **Slackware Tools**: Requires standard Slackware tools like `mkinitrd`.
 
-## Usage
+## Usage.
 
 1.  **Navigate to the Kernel Source Directory**:
     The script **must** be run from the root of your Linux kernel source tree.
@@ -50,7 +50,7 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
     - **Compile?**: Choose whether to compile the kernel (`y/N`). If `y`, it will run `make bzImage` and `make modules`.
     - **Bootloader**: At the end, it will ask if you want to update your bootloader (LILO/GRUB).
 
-## 📂 Output
+## Output.
 
 - **System Directories**:
     - `/boot/vmlinuz-generic-X.X.X`
@@ -64,7 +64,7 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
 - **Backup Archive**:
     - A tarball is created at `/tmp/kernel-dist-<VERSION>-<SUFFIX>.tar.gz` containing all installed files.
 
-## Safety Mechanisms
+## Safety Mechanisms.
 
 - **Dependency Check**: Verifies it is running in a valid kernel source tree.
 - **Backups**: Never blindly overwrites `/boot/vmlinuz` or `/boot/initrd.gz`. It moves existing files to `.old` first.
