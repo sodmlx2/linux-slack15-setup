@@ -1,25 +1,24 @@
 ## Slackware setup for programming and kernel hacking!
 
-### 1. Adicionando usuário e setando permissões
+### 1. User!
 ```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash ocram
-passwd ocram
+useradd -m -g users -G wheel,audio,video -s /bin/bash ocram && echo "ocram:slackware" | chpasswd && chage -d 0 ocram
 ```
 
-### 1. Configuracao do git.
+### 1. Identity!.
 ```bash
 # to set your account's default identity.
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
+git config --global user.email "ocram@example.com"
+git config --global user.name "Ocram"
 ```
 
-### 2. Conectando a uma rede wireless via nmcli
+### 2. Wireless.
 ```bash
 nmcli device wifi connect "ESSID" password "PASSWORD"
 
 ```
 
-### 3. Atualizando os pacotes relacionados ao kernel
+### 3. Packages.
 ```bash
 # Escolha um espelho (mirror) oficial antes de atualizar
 vim /etc/slackpkg/mirrors && slackpkg update
@@ -27,7 +26,7 @@ vim /etc/slackpkg/mirrors && slackpkg update
 slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
 ```
 
-### 4. Gerando uma chave SSH para o GitHub
+### 4. SSH Keys.
 ```bash
 ssh-keygen -t ed25519 -C "e-mail@test.com"
 eval "$(ssh-agent -s)"
@@ -35,7 +34,7 @@ ssh-add ~/.ssh/id_ed25519
 ssh -T git@github.com
 ```
 
-### 5. Gerando o initrd e atualizando o EFI
+### 5. Make INITRD.
 ```bash
 # Executar o mkinitrd com módulos divididos por barra para facilitar a leitura
 mkinitrd -c -k 5.15.193 -f ext4 -r /dev/nvme0n1p3 \
