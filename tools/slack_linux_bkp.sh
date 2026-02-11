@@ -2,62 +2,90 @@
 
 clear
 
-echo -e "\n--- Slackware Linux Kernel Backup ---"
+set -e
 
-# 1. Verificação de root
-if [ "$EUID" -ne 0 ]; then
-  echo -e "\n[INFO]: Este script precisa de privilégios de ROOT.\n"
-  exit 1
+echo -e "\n--- Linux Kernel Slackware ---\n"
+
+# ------------- CONFIG -------------
+
+if [ ! -f "Makefile" ] || [ ! -d "arch" ]; then
+    echo -e "\n[ERROR]: Execute this script here -> ./linux/scripts/slack-kernel.sh\n"
+    exit 1
 fi
 
-KVER="5.15.193"
-BK_DIR="/root/kernel-safe-$KVER"
+K_VER=$(make -s kernelrelease)
+echo "[INFO]: Version of this compilation: $K_VER"
 
-echo "--- Iniciando Backup da Arquitetura Slackware ($KVER) ---"
+ARCH_RAW=$(uname -m)
+case $ARCH_RAW in
+    x86_64|i386|i686) ARCH_DIR="x86" ;;
+    *)                ARCH_DIR="$ARCH_RAW" ;;
+esac
 
-# Criando estrutura limpa
-mkdir -p $BK_DIR/boot
-mkdir -p $BK_DIR/modules
-mkdir -p $BK_DIR/source
-mkdir -p $BK_DIR/include
+echo -e "[INFO]: Architecture of this compilation: $ARCH_RAW \n"
 
-# 2. Backup dos Binários de Boot (Baseado no seu 'ls /boot')
-echo "[*] Copiando binários do /boot (Generic, Huge, Config, Maps)..."
-cp -a /boot/*$KVER* $BK_DIR/boot/
-[ -f /boot/initrd.gz ] && cp -a /boot/initrd.gz $BK_DIR/boot/
+read -r -p "> Project: " SUFIXO
+SUFIXO_CLEAN="${SUFIXO// /-}"
+DEST_DIR="/tmp/kernel-dist-${K_VER}-${SUFIXO_CLEAN}"
 
-# 3. Backup dos Módulos (kernel-modules-$KVER)
-echo "[*] Copiando módulos de /lib/modules/$KVER..."
-if [ -d /lib/modules/$KVER ]; then
-    cp -a /lib/modules/$KVER $BK_DIR/modules/
+# ------------- ENG CONFIG -------------
+
+# 1. Cria a Pasta do projeto de compilacao em /tmp usando o nome do projeto e versao.
+[ -d "$DEST_DIR" ] && rm -rf "$DEST_DIR"
+mkdir -p "$DEST_DIR"/{boot,modules,headers}
+
+# 2. Coleta de Binários
+BZ_PATH="arch/$ARCH_DIR/boot/bzImage"
+if [ -f "$BZ_PATH" ]; then
+    echo "[INFO]: Copy bzImage generate with make bziImage modules command!"
+    cp -v "$BZ_PATH" "$DEST_DIR/boot/vmlinuz-generic-$K_VER"
+    cp -v "$BZ_PATH" "/boot/vmlinuz-generic-$K_VER"
 else
-    echo "Aviso: Pasta de módulos não encontrada!"
+    echo "[ERRO]: bzImage não encontrado."
+    exit 1
 fi
 
-# 4. Backup do Source e Headers (kernel-source e kernel-headers)
-echo "[*] Copiando Source e Headers de sistema..."
-# Backup do source (kernel-source-5.15.193-noarch-1)
-[ -d /usr/src/linux-$KVER ] && cp -a /usr/src/linux-$KVER $BK_DIR/source/
+[ -f "System.map" ] && cp -v System.map "$DEST_DIR/boot/System.map-$K_VER" && cp -v System.map "/boot/System.map-$K_VER"
+[ -f ".config" ]   && cp -v .config "$DEST_DIR/boot/config-$K_VER" && cp -v .config "/boot/config-$K_VER"
 
-# Backup dos headers (kernel-headers-5.15.193-x86-1)
-# O Slackware os mantém em /usr/include/linux e /usr/include/asm
-cp -ar /usr/include/linux $BK_DIR/include/
-cp -ar /usr/include/asm $BK_DIR/include/
+# 6. Instalação de Módulos
+echo "[*] Instalando módulos na pasta temporária e no sistema..."
+make modules_install INSTALL_MOD_PATH="$DEST_DIR/modules" >> logs.txt
+# Sincroniza com o sistema real para o mkinitrd funcionar
+mkdir -p "/lib/modules/$K_VER"
+cp -a "$DEST_DIR/modules/lib/modules/$K_VER/." "/lib/modules/$K_VER/"
+depmod -a "$K_VER"
 
-# 5. Criação dos links simbólicos para o LILO de emergência
-echo "[*] Criando links de segurança em /boot..."
-# Link para o vmlinuz (priorizando generic conforme sua instalação)
-if [ -f /boot/vmlinuz-generic-$KVER ]; then
-    ln -sf /boot/vmlinuz-generic-$KVER /boot/vmlinuz-seguro
-elif [ -f /boot/vmlinuz-huge-$KVER ]; then
-    ln -sf /boot/vmlinuz-huge-$KVER /boot/vmlinuz-seguro
+# 7. Instalação de Headers
+echo "[INFO] Installing the linux headers."
+make headers_install INSTALL_HDR_PATH="$DEST_DIR/headers" >> logs.txt
+
+# 8. Geração do initrd (Lógica Robusta)
+if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
+    echo "[INFO] Generate initrd."
+    # Pega o comando sugerido
+    MK_CMD=$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -k "$K_VER" | grep "mkinitrd" | head -n 1)
+
+    if [ ! -z "$MK_CMD" ]; then
+        # Executa o comando (geralmente gera /boot/initrd.gz)
+        eval "$MK_CMD"
+
+        # Define o nome final com versão
+        FINAL_INITRD="/boot/initrd-$K_VER.gz"
+
+        # Verifica se o arquivo foi gerado e move/copia
+        if [ -f "/boot/initrd.gz" ]; then
+            mv -v /boot/initrd.gz "$FINAL_INITRD"
+        fi
+
+        if [ -f "$FINAL_INITRD" ]; then
+            cp -v "$FINAL_INITRD" "$DEST_DIR/boot/"
+            echo "[INFO]: initrd integrado ao pacote."
+        else
+            echo "[AVISO]: initrd não encontrado em $FINAL_INITRD"
+        fi
+    fi
 fi
 
-# Link para o initrd
-[ -f /boot/initrd.gz ] && ln -sf /boot/initrd.gz /boot/initrd-seguro.gz
-
-echo "--- Backup concluído com sucesso em $BK_DIR ---"
-
-# ajustando o menu do elilo.
-cd /usr/share/doc/elilo-3.16/examples/textmenu_chooser/
-mv general.msg params.msg textmenu-message.msg /boot/efi/EFI/Slackware/
+echo -e "\n[INFO] Packing Linux Kernel Files."
+tar -czf "${DEST_DIR}.tar.gz" -C "$DEST_DIR" .
