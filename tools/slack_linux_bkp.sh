@@ -45,6 +45,7 @@ if [[ "$COMPILE_KERNEL" =~ ^[Yy]$ ]]; then
 
     # generating .config file with kernel configurations.
     echo -e "\n[INFO]: Generating Config file."
+
     # make localmodconfig
     # make menuconfig
 
@@ -111,19 +112,20 @@ fi
 install_kernel_file "System.map" "System.map-$K_VER" "System.map" || echo "[WARN] System.map not found."
 install_kernel_file ".config" "config-$K_VER" "config" || echo "[WARN] .config not found."
 
-# 6. Instalação de Módulos
+# install modules.
 echo -e "\n[INFO] Instalando módulos na pasta temporária e no sistema..."
 make modules_install INSTALL_MOD_PATH="$DEST_DIR/modules"
-# Sincroniza com o sistema real para o mkinitrd funcionar
+
+# copying modules.
 mkdir -p "/lib/modules/$K_VER"
 cp -a "$DEST_DIR/modules/lib/modules/$K_VER/." "/lib/modules/$K_VER/"
 depmod -a "$K_VER"
 
-# 7. Instalação de Headers
+# install headers.
 echo "[INFO] Installing the linux headers."
 make headers_install INSTALL_HDR_PATH="$DEST_DIR/headers"
 
-# 8. Geração do initrd (Lógica Robusta)
+# generate initrd.
 if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
     echo "[INFO] Generate initrd."
 
@@ -135,7 +137,7 @@ if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
         K_VER="$K_VER_CURRENT"
     fi
 
-    # Pega o comando sugerido - ensure we capture the line starting with mkinitrd
+    # ensure we capture the line starting with mkinitrd
     MK_CMD=$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -k "$K_VER" | grep "^mkinitrd" | head -n 1)
 
     if [ -n "$MK_CMD" ]; then
@@ -147,7 +149,6 @@ if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
              mv -v /boot/initrd.gz /boot/initrd.gz.old
         fi
 
-        # Executa o comando (geralmente gera /boot/initrd.gz)
         echo -e "[INFO] Running: $MK_CMD"
         if eval "$MK_CMD"; then
             echo "[INFO] mkinitrd completed successfully."
@@ -156,7 +157,6 @@ if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
             exit 1
         fi
 
-        # Define o nome final com versão
         FINAL_INITRD_NAME="initrd-$K_VER.gz"
         FINAL_INITRD_PATH="/boot/$FINAL_INITRD_NAME"
 
@@ -231,19 +231,63 @@ if [ -f /etc/elilo.conf ] && [ -x "$(command -v elilo)" ]; then
 fi
 
 #
-# Check for GRUB.
+# Check for GRUB2.
 #
-# if [ -d /boot/grub ]; then
-#     if command -v update-grub > /dev/null; then
-#         echo "[INFO] GRUB (update-grub) detected."
-#         read -r -p "Run 'update-grub'? [y/N] " RUN_GRUB
-#         [[ "$RUN_GRUB" =~ ^[Yy]$ ]] && update-grub
-#     elif command -v grub-mkconfig > /dev/null; then
-#         echo "[INFO] GRUB (grub-mkconfig) detected."
-#         read -r -p "Run 'grub-mkconfig -o /boot/grub/grub.cfg'? [y/N] " RUN_GRUB
-#         [[ "$RUN_GRUB" =~ ^[Yy]$ ]] && grub-mkconfig -o /boot/grub/grub.cfg
-#     fi
-# fi
+if [ -d /boot/grub ]; then
+    if command -v update-grub > /dev/null; then
+        echo "[INFO] GRUB (update-grub) detected."
+	read -r -p "Run 'update-grub'? [y/N] " RUN_GRUB
+        [[ "$RUN_GRUB" =~ ^[Yy]$ ]] && update-grub
+    elif command -v grub-mkconfig > /dev/null; then
+	echo "[INFO] GRUB (grub-mkconfig) detected."
+	read -r -p "Run 'grub-mkconfig -o /boot/grub/grub.cfg'? [y/N] " RUN_GRUB
+	[[ "$RUN_GRUB" =~ ^[Yy]$ ]] && grub-mkconfig -o /boot/grub/grub.cfg
+    fi
+fi
+
 #
+# QEMU Testing.
+#
+if command -v qemu-system-x86_64 > /dev/null; then
+    echo -e "\n[INFO] QEMU detected."
+    read -r -p "Run QEMU to test the new kernel? [y/N] " RUN_QEMU
+    if [[ "$RUN_QEMU" =~ ^[Yy]$ ]]; then
+        # Resolve INITRD if not set (e.g. if mkinitrd block was skipped)
+        if [ -z "$FINAL_INITRD_PATH" ]; then
+             if [ -f "/boot/initrd-${K_VER}.gz" ]; then
+                 FINAL_INITRD_PATH="/boot/initrd-${K_VER}.gz"
+             elif [ -f "/boot/initrd.gz" ]; then
+                 FINAL_INITRD_PATH="/boot/initrd.gz"
+             fi
+        fi
+
+        QEMU_CMD="qemu-system-x86_64 -m 2048 -kernel $BZ_PATH"
+        if [ -n "$FINAL_INITRD_PATH" ]; then
+            QEMU_CMD="$QEMU_CMD -initrd $FINAL_INITRD_PATH"
+        fi
+
+        # Check for KVM
+        if [ -w /dev/kvm ]; then
+            QEMU_CMD="$QEMU_CMD -enable-kvm"
+        else
+            echo "[WARN] /dev/kvm not accessible, running without KVM acceleration."
+        fi
+
+        read -r -p "Enter path to Root Disk Image (s to skip/kernel-only test): " DISK_IMG
+        if [ "$DISK_IMG" != "s" ] && [ -n "$DISK_IMG" ] && [ -f "$DISK_IMG" ]; then
+             QEMU_CMD="$QEMU_CMD -drive file=$DISK_IMG,format=raw"
+             # Try to guess root?
+             QEMU_CMD="$QEMU_CMD -append \"root=/dev/sda1 ro\"" 
+        else
+             echo "[INFO] Running kernel-only test (will likely panic on root mount)."
+             QEMU_CMD="$QEMU_CMD -append \"panic=1\""
+        fi
+
+        echo "[INFO] Executing: $QEMU_CMD"
+        eval "$QEMU_CMD"
+    fi
+else
+    echo "[INFO] qemu-system-x86_64 not found. Skipping QEMU test."
+fi
 
 echo -e "\n[INFO] Done."
