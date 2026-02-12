@@ -70,16 +70,22 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
 - **Dependency Check**: Verifies it is running in a valid kernel source tree.
 - **Backups**: Never blindly overwrites `/boot/vmlinuz` or `/boot/initrd.gz`. It moves existing files to `.old` first.
 
-# User Creation.
+---
+
+## User Creation & Security Identity
+
+No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
+---
 
 # Basic Git Configuration.
 ```bash
 git config --global user.email "user@example.com"
 git config --global user.name "username"
 ```
+---
 
 # Network Configuration.
 ```bash
