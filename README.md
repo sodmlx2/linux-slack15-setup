@@ -6,7 +6,7 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 1.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
     * Uso do script `slack_linux_bkp.sh` e automação de builds.
-2.  **[Criação de Usuário](slackware_README.md#user_creation_&_security_identity)**
+2.  **[Criação de Usuário](slackware_README.md#user_identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
 3.  **[Configuração Avançada do Git](slackware_README.md#basic-git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.

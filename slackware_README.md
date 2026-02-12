@@ -72,7 +72,7 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
 
 ---
 
-## User Creation & Security Identity
+## User Identity
 
 No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
 ```bash
