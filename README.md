@@ -2,9 +2,7 @@
 
 Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
 
-## Índice de Configurações
-
-Clique nos links abaixo para ser direcionado aos detalhes técnicos no arquivo [slack_README.md](slack_README.md):
+## Índice de Configurações.
 
 1.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
     * Uso do script `slack_linux_bkp.sh` e automação de builds.
@@ -34,10 +32,11 @@ Clique nos links abaixo para ser direcionado aos detalhes técnicos no arquivo [
 * **Empacotamento**: Gera um `.tar.gz` contendo tudo (Kernel, Módulos, Headers e Config).
 
 ---
-## 🚀 Como Iniciar
+
+## Como Iniciar
 
 Para clonar e configurar seu ambiente:
 ```bash
-git clone [https://github.com/seu-usuario/linux-slack15-setup.git](https://github.com/seu-usuario/linux-slack15-setup.git)
+git clone [https://github.com/sodmlx2/linux-slack15-setup.git](https://github.com/sodmlx2/linux-slack15-setup.git)
 cd linux-slack15-setup
 chmod +x slack_linux_bkp.sh
