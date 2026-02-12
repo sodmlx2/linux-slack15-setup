@@ -37,6 +37,15 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 Para clonar e configurar seu ambiente:
 ```bash
-git clone https://github.com/sodmlx2/linux-slack15-setup.git
-cd linux-slack15-setup
-chmod +x slack_linux_bkp.sh
+cd $HOME && git clone https://github.com/sodmlx2/linux-slack15-setup.git
+```
+
+```bash
+cp linux-slack15-setup/tools/slack_linux_bkp.sh {path_of_new_kernel_compilation}
+```
+
+```bash
+# Exemplo.
+cp $HOME/linux-slack15-setup/tools/slack_linux_bkp.sh $HOME/linux
+$HOME/linux/slack_linux_bkp.sh
+```

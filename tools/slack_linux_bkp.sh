@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-clear
 set -e
+
 echo -e "\n--- Linux Kernel Slackware ---"
 
 #
