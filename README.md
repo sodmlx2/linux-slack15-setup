@@ -1,56 +1,43 @@
 # linux-slack15-setup
 
-# Slackware setup for programming and kernel hacking beginners.
+Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
 
-## User Creation.
+## Índice de Configurações
+
+Clique nos links abaixo para ser direcionado aos detalhes técnicos no arquivo [slack_README.md](slack_README.md):
+
+1.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
+    * Uso do script `slack_linux_bkp.sh` e automação de builds.
+2.  **[Criação de Usuário](slackware_README.md#user-creation)**
+    * Setup rápido de usuário para lab com permissões de hardware.
+3.  **[Configuração Avançada do Git](slackware_README.md#basic-git-configuration)**
+    * Ajustes para Kernel Dev e performance em projetos C++.
+4.  **[Configuração de Rede](slackware_README.md#network-configuration)**
+    * Comandos CLI para Wi-Fi e NetworkManager.
+5.  **[Atualizações de Sistema e Pacotes](slackware_README.md#system-updates--packages)**
+    * Gestão de espelhos e upgrade de pacotes base do kernel.
+6.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
+    * Criação de chaves Ed25519 e autenticação no GitHub.
+7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
+    * Comandos específicos para módulos de armazenamento e HID.
+8.  **[Ajustes de Menu ELILO](slackware_README.md#adjusting-elilo-text-menu-support)**
+    * Ativação do suporte a menus de texto no boot EFI.
+9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
+    * Ferramentas para análise de segurança e binários.
+
+---
+
+## Tools `slack_linux_bkp.sh`
+
+* **Compilação Paralela**: Detecta núcleos automaticamente via `nproc`.
+* **Segurança**: Faz backup de `vmlinuz` e `initrd.gz` para `.old` antes de sobrescrever.
+* **Empacotamento**: Gera um `.tar.gz` contendo tudo (Kernel, Módulos, Headers e Config).
+
+---
+## 🚀 Como Iniciar
+
+Para clonar e configurar seu ambiente:
 ```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
-```
-
-## Basic Git Configuration
-```bash
-git config --global user.email "user@example.com"
-git config --global user.name "username"
-```
-
-## Network Configuration
-```bash
-iwlist wlan0 scan | grep ESSID
-nmcli device wifi connect "ESSID" password "PASSWORD"
-```
-
-## System Updates & Packages
-```bash
-vim /etc/slackpkg/mirrors
-slackpkg update
-slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
-```
-
-##Generating SSH Keys
-```bash
-ssh-keygen -t ed25519 -C "user@test.com"
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-ssh -T git@github.com
-```
-
-## Generating INITRD
-```bash
-mkinitrd -c -k 5.15.193 -f ext4 -r /dev/nvme0n1p3 \
--m usb-storage:xhci-hcd:xhci-pci:ohci-pci:ehci-pci:uhci-hcd:ehci-hcd:hid:\
-usbhid:i2c-hid:hid_generic:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:\
-hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:jbd2:mbcache:\
-crc32c_intel:crc32c_generic:ext4 \
--u -o /boot/initrd.gz
-
-## Copying file to EFI Slackware.
-cp /boot/vmlinuz-generic-5.15.193 /boot/efi/EFI/Slackware/vmlinuz
-cp /boot/initrd.gz /boot/efi/EFI/Slackware/initrd.gz
-```
-
-## Adjusting ELILO Text Menu Support
-
-```bash
-cd /usr/share/doc/elilo-3.16/examples/textmenu_chooser/
-mv general.msg params.msg textmenu-message.msg /boot/efi/EFI/Slackware/
-```
+git clone [https://github.com/seu-usuario/linux-slack15-setup.git](https://github.com/seu-usuario/linux-slack15-setup.git)
+cd linux-slack15-setup
+chmod +x slack_linux_bkp.sh
