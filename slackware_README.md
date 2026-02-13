@@ -24,7 +24,9 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 ---
 
 ### Editar o arquivo `/etc/group`
-Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo `users`, apenas verifique se o GID coincide.
+Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá.
+
+Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 <details>
 <summary>🔥 </summary>
