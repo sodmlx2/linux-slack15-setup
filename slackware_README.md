@@ -55,11 +55,11 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 
 | Arquivo | Função Básica | O que fazer nele |
 | :--- | :--- | :--- |
-| `/etc/passwd` | Registro Geral | Adicionar linha com Nome, UID, GID e Home. |
-| `/etc/shadow` | Cofre de Senhas | Onde o `passwd` salva a senha criptografada. |
-| `/etc/group` | Clubes do Sistema | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
+| `/etc/passwd` | Registro | Adicionar linha com Nome, UID, GID e Home. |
+| `/etc/shadow` | Senhas | Onde o `passwd` salva a senha criptografada. |
+| `/etc/group` | Grupos | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
 | `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
-| `/etc/skel/` | Modelo de Casa | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
+| `/etc/skel/` | Esqueleto | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
 
 ---
 
