@@ -14,7 +14,7 @@ Este repositório contém um guia basico de estudo linux e uma ferramenta para a
     * Comandos CLI para Wi-Fi e NetworkManager.
 5.  **[Atualizações de Sistema e Pacotes](slackware_README.md#system-updates--packages)**
     * Gestão de espelhos e upgrade de pacotes base do kernel.
-6.  **[Compilação do Kernel Slackware](slackware_README.md#compilacao-do-linux-kernel)**
+6.  **[Compilação do Kernel Slackware](README.md#compilacao-do-linux-kernel)**
     * Uso do script `slack_linux.sh` e automação de builds.
 7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
     * Comandos específicos para módulos de armazenamento e HID.
