@@ -1,6 +1,6 @@
 # linux-slack15-setup
 
-Este repositório contém guias e ferramentas para automação e compilação de kernel em ambiente de Desenvolvimento C/C++.
+Este repositório contém guias e uma ferramenta para automação e compilação do linux kernel em ambiente de Desenvolvimento C/C++.
 
 ## Índice.
 
