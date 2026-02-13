@@ -5,9 +5,9 @@
 
 1. Editar o arquivo /etc/passwd
 
-Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
+    Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
 
-A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
+        A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
 
     Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
 
@@ -35,7 +35,6 @@ Bash
 ```bash
 mkdir /home/fulano && cp -R /etc/skel/. /home/fulano/      
 ```
-
 ```bash
 chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
 ```
