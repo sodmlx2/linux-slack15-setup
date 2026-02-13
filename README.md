@@ -2,7 +2,7 @@
 
 Este repositório contém guias e ferramentas para automação e compilação de kernel em ambiente (Desenvolvimento C/C++) Slackware 15.
 
-## Índice de Estudos.
+## Índice.
 
 1.  **[Bem-vindo ao Arquivo de Sião](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
