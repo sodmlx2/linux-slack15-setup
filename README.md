@@ -26,9 +26,14 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 ## Executando o `slack_linux.sh`.
 
 Configurando o ambiente!
+
 ```bash
-# Clone do repositorio.
+# Obtendo a ferramenta via git.
 cd $HOME && git clone https://github.com/sodmlx2/linux-slack15-setup.git
+```
+```bash
+# Obtendo o Linux Kernel via git.
+cd $HOME && git clone git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 ```
 ```bash
 # Copiando o script `slack_linux.sh` para o diretorio raiz do linux kernel.
