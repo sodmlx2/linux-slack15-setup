@@ -71,8 +71,6 @@ Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar 
     - **Compilar?**: Escolha se deseja compilar o kernel (`y/N`).
     - **Bootloader**: Ao final, ele perguntará se deseja atualizar seu bootloader.
 
----
-
 ## Saída (Output)
 
 * **Diretórios do Sistema**:
@@ -86,8 +84,6 @@ Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar 
     * `/boot/initrd.gz` -> *Novo Initrd*
 * **Arquivo de Backup**:
     * Um tarball é criado em `/tmp/kernel-dist-<VERSÃO>-<SUFIXO>.tar.gz` contendo todos os arquivos instalados.
-
----
 
 ## Mecanismos de Segurança
 
