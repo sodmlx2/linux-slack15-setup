@@ -33,12 +33,12 @@ Agora você precisa criar o espaço físico para os arquivos do usuário e entre
 Bash
 
 ```bash
-mkdir /home/fulano
-cp -R /etc/skel/. /home/fulano/      # Copia arquivos de perfil padrão
-chown -R 1001:100 /home/fulano       # Define o dono (use o UID:GID escolhido)
-chmod -R 700 /home/fulano
+mkdir /home/fulano && cp -R /etc/skel/. /home/fulano/      
 ```
 
+```bash
+chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
+```
 
 | Arquivo | Função Básica | O que fazer nele |
 | :--- | :--- | :--- |
