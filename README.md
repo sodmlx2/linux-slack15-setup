@@ -25,7 +25,7 @@ Este repositório contém um guia basico de estudo linux e uma ferramenta para a
 
 ## Compilação do Linux Kernel.
 
-Este projeto fornece um script Bash robusto (`slack_linux.sh`) desenvolvido para automatizar o processo de compilação, instalação, backup e empacotamento de um kernel Linux customizado em sistemas Slackware.
+Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar o processo de compilação, instalação, backup e empacotamento de um kernel Linux customizado em sistemas Slackware.
 
 ## Funcionalidades
 
