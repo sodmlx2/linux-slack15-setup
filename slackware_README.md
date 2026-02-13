@@ -96,10 +96,29 @@ git config --global core.autocrlf input
 ---
 
 ## Network Configuration.
+
+O NetworkManager é um daemon focado em simplificar a configuração de rede.
+
+Sua função principal é tornar a conexão à internet e o gerenciamento de interfaces algo automático e prático.
+
 ```bash
 iwlist wlan0 scan | grep ESSID
 nmcli device wifi connect "ESSID" password "PASSWORD"
 ```
+---
+
+### Resumo.
+
+| Arquivo | Função Básica | O que fazer nele |
+| :--- | :--- | :--- |
+| `/etc/NetworkManager/NetworkManager.conf` | Configuração Global | Editar o comportamento do daemon e plugins de DNS. |
+| `/etc/NetworkManager/system-connections/` | Perfis de Rede | Armazenar arquivos .nmconnection com SSIDs e senhas. |
+| `/etc/NetworkManager/dispatcher.d/` | Automação | Colocar scripts que rodam quando a conexão sobe ou desce. |
+| `/etc/NetworkManager/conf.d/` | Configurações Extras | Adicionar fragmentos de configuração para personalização. |
+| `/var/lib/NetworkManager/` | Estado de Rede | Consultar leases de DHCP e o estado atual das conexões. |
+| `/etc/hostname` | Nome da Máquina | Definir o nome do host que será visto na rede. |
+
+---
 
 ## System Updates & Packages.
 ```bash
