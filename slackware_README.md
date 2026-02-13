@@ -1,9 +1,69 @@
 
 # linux-slack15-setup
 
+Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
+
 ## User Identity
 
-No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
+### Editar o arquivo `/etc/passwd`
+
+Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
+
+A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
+
+<details>
+  
+<summary>🔥</summary>
+
+> **Exemplo:** `fulano:x:1001:100::/home/fulano:/bin/bash`
+>
+> **Nota:** O `x` indica que a senha está criptografada no arquivo `shadow`. O `100` é o GID padrão do grupo `users` no Slackware.
+
+</details>
+
+---
+
+### Editar o arquivo `/etc/group`
+Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo `users`, apenas verifique se o GID coincide.
+
+<details>
+<summary>🔥 </summary>
+
+> **Exemplo:** `fulano:x:1001:`
+> 
+> **Dica:** Adicione o nome do usuário ao final de grupos existentes (como `wheel` ou `audio`) para dar permissões extras.
+
+</details>
+
+---
+
+### Editar o arquivo `/etc/shadow`
+Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
+
+<details>
+<summary>🔥 </summary>
+
+> **Adicione:** `fulano:!:19000:0:99999:7:::`
+>
+> **Nota:** O sinal de `!` impede o login até que você defina uma senha real usando o comando `passwd`.
+
+</details>
+
+---
+
+### Resumo.
+
+| Arquivo | Função Básica | O que fazer nele |
+| :--- | :--- | :--- |
+| `/etc/passwd` | Registro | Adicionar linha com Nome, UID, GID e Home. |
+| `/etc/shadow` | Senhas | Onde o `passwd` salva a senha criptografada. |
+| `/etc/group` | Grupos | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
+| `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
+| `/etc/skel/` | Esqueleto | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
+
+---
+
+### Comando de Referência.
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
