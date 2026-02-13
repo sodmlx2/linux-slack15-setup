@@ -4,21 +4,21 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 ## Índice de Configurações.
 
-1.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
-    * Uso do script `slack_linux_bkp.sh` e automação de builds.
-2.  **[Criação de Usuário](slackware_README.md#user-identity)**
+1.  **[Criação de Usuário](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
-3.  **[Configuração Avançada do Git](slackware_README.md#basic-git-configuration)**
+2.  **[Configuração do Git](slackware_README.md#basic-git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.
+3.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
+    * Criação de chaves Ed25519 e autenticação no GitHub.
 4.  **[Configuração de Rede](slackware_README.md#network-configuration)**
     * Comandos CLI para Wi-Fi e NetworkManager.
 5.  **[Atualizações de Sistema e Pacotes](slackware_README.md#system-updates--packages)**
     * Gestão de espelhos e upgrade de pacotes base do kernel.
-6.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
-    * Criação de chaves Ed25519 e autenticação no GitHub.
+6.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
+    * Uso do script `slack_linux.sh` e automação de builds.
 7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
     * Comandos específicos para módulos de armazenamento e HID.
-8.  **[Ajustes de Menu ELILO](slackware_README.md#adjusting-elilo-text-menu-support)**
+8.  **[Ajustes de Bootloader](slackware_README.md#adjusting-elilo-text-menu-support)**
     * Ativação do suporte a menus de texto no boot EFI.
 9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
     * Ferramentas para análise de segurança e binários.
@@ -31,11 +31,7 @@ cd $HOME && git clone https://github.com/sodmlx2/linux-slack15-setup.git
 ```
 
 ```bash
-cp linux-slack15-setup/tools/slack_linux.sh {path_of_new_kernel_compilation}
-```
-
-```bash
-# Exemplo.
-cp $HOME/linux-slack15-setup/tools/slack_linux_bkp.sh $HOME/linux
-$HOME/linux/slack_linux.sh
+cp linux-slack15-setup/tools/slack_linux.sh {path_of_new_kernel}
+# Exemplo:
+cp $HOME/linux-slack15-setup/tools/slack_linux.sh $HOME/linux
 ```

@@ -1,6 +1,34 @@
 
 # linux-slack15-setup
 
+## User Identity
+
+No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
+```bash
+useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
+```
+---
+
+# Basic Git Configuration.
+```bash
+git config --global user.email "user@example.com"
+git config --global user.name "username"
+```
+---
+
+# Network Configuration.
+```bash
+iwlist wlan0 scan | grep ESSID
+nmcli device wifi connect "ESSID" password "PASSWORD"
+```
+
+# System Updates & Packages.
+```bash
+vim /etc/slackpkg/mirrors
+slackpkg update
+slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
+```
+
 # Slackware Kernel Compilation.
 
 This project provides a robust Bash script (`slack_linux.sh`) designed to automate the process of compiling, installing, backing up, and packaging a custom Linux Kernel on Slackware systems.
@@ -69,36 +97,6 @@ This project provides a robust Bash script (`slack_linux.sh`) designed to automa
 
 - **Dependency Check**: Verifies it is running in a valid kernel source tree.
 - **Backups**: Never blindly overwrites `/boot/vmlinuz` or `/boot/initrd.gz`. It moves existing files to `.old` first.
-
----
-
-## User Identity
-
-No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
-```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
-```
----
-
-# Basic Git Configuration.
-```bash
-git config --global user.email "user@example.com"
-git config --global user.name "username"
-```
----
-
-# Network Configuration.
-```bash
-iwlist wlan0 scan | grep ESSID
-nmcli device wifi connect "ESSID" password "PASSWORD"
-```
-
-# System Updates & Packages.
-```bash
-vim /etc/slackpkg/mirrors
-slackpkg update
-slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
-```
 
 # Generating SSH Keys.
 ```bash
