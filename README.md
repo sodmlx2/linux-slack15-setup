@@ -1,12 +1,12 @@
 # linux-slack15-setup
 
-Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
+Este repositório contém guias e ferramentas para automação e compilação de kernel em ambiente de Desenvolvimento C/C++.
 
-## Índice de Estudos.
+## Índice.
 
-1.  **[Criação de Usuário](slackware_README.md#user-identity)**
+1.  **[Bem-vindo ao Arquivo de Sião](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
-2.  **[Configuração do Git](slackware_README.md#basic-git-configuration)**
+2.  **[O rastreador de conteúdo estúpido](slackware_README.md#git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.
 3.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
     * Criação de chaves Ed25519 e autenticação no GitHub.

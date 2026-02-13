@@ -1,7 +1,7 @@
 
 # linux-slack15-setup
 
-Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
+Este repositório contém guias e ferramentas para automação e compilação de kernel em ambiente de Desenvolvimento C/C++.
 
 ## User Identity
 
@@ -24,7 +24,9 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 ---
 
 ### Editar o arquivo `/etc/group`
-Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo `users`, apenas verifique se o GID coincide.
+Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá.
+
+Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 <details>
 <summary>🔥 </summary>
@@ -61,18 +63,35 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 | `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
 | `/etc/skel/` | Esqueleto | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
 
----
-
 ### Comando de Referência.
 ```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
+sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | sudo chpasswd && sudo chage -d 0 lab
 ```
 ---
 
-# Basic Git Configuration.
+# Git Configuration.
 ```bash
 git config --global user.email "user@example.com"
 git config --global user.name "username"
+```
+```bash
+# Assinar commits automaticamente.
+git config --global user.signingkey SEUIDGPG
+git config --global commit.gpgsign true
+```
+```bash
+# Configurando um servidor SMTP.
+git config --global sendemail.smtpserver smtp.gmail.com
+git config --global sendemail.smtpserverport 587
+git config --global sendemail.smtpencryption tls
+git config --global sendemail.smtpuser seu.email@gmail.com
+```
+```bash
+# Destacar erros de espaço em branco.
+git config --global core.whitespace fix,space-before-tab,trailing-space
+
+# Garante que o Git não converta CRLF (Windows) para LF (Linux) de forma destrutiva
+git config --global core.autocrlf input
 ```
 ---
 
