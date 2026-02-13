@@ -2,7 +2,7 @@
 
 Este repositório contém guias e ferramentas para automação, compilação de kernel e configuração de ambiente no Slackware 15, com foco em desenvolvimento C++ e DevSecOps.
 
-## Índice de Configurações.
+## Índice de Estudos.
 
 1.  **[Criação de Usuário](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
@@ -23,15 +23,18 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
     * Ferramentas para análise de segurança e binários.
 
-## Como Iniciar
+## Executando o `slack_linux.sh`.
 
-Para clonar e configurar seu ambiente:
+Configurando o ambiente!
 ```bash
+# Clone do repositorio.
 cd $HOME && git clone https://github.com/sodmlx2/linux-slack15-setup.git
 ```
-
 ```bash
-cp linux-slack15-setup/tools/slack_linux.sh {path_of_new_kernel}
-# Exemplo:
+# Copiando o script `slack_linux.sh` para o diretorio raiz do linux kernel.
 cp $HOME/linux-slack15-setup/tools/slack_linux.sh $HOME/linux
+```
+```bash
+# Executando o script `slack_linux.sh`.
+$HOME/linux/slack_linux.sh
 ```
