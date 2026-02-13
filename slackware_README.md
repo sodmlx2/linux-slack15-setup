@@ -63,12 +63,11 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 | `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
 | `/etc/skel/` | Esqueleto | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
 
----
-
 ### Comando de Referência.
 ```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
+sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | sudo chpasswd && sudo chage -d 0 lab
 ```
+
 ---
 
 # Basic Git Configuration.
