@@ -86,6 +86,13 @@ git config --global sendemail.smtpserverport 587
 git config --global sendemail.smtpencryption tls
 git config --global sendemail.smtpuser seu.email@gmail.com
 ```
+```bash
+# Destacar erros de espaço em branco.
+git config --global core.whitespace fix,space-before-tab,trailing-space
+
+# Garante que o Git não converta CRLF (Windows) para LF (Linux) de forma destrutiva
+git config --global core.autocrlf input
+```
 ---
 
 # Network Configuration.
