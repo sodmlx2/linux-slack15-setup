@@ -12,12 +12,12 @@ Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
 A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 
 <details>
+    
 <summary>🔥</summary>
->
 > **Exemplo:** `fulano:x:1001:100::/home/fulano:/bin/bash`
 >
 > **Nota:** O `x` indica que a senha está criptografada no arquivo `shadow`. O `100` é o GID padrão do grupo `users` no Slackware.
->
+
 </details>
 
 Editar o arquivo /etc/group
