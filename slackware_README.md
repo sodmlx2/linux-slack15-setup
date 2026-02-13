@@ -9,7 +9,8 @@ Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
 
 A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
 
-Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
+    Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
+
 Nota: O x indica que a senha está criptografada no arquivo shadow. O 100 geralmente é o GID do grupo users no Slackware.
 
 ## 2. Editar o arquivo /etc/group
@@ -24,7 +25,7 @@ Este arquivo armazena a senha. Como você não tem a hash da senha de cabeça, a
 
     Adicione: fulano:!:19000:0:99999:7:::
 
-    O sinal de ! impede o login até que você defina uma senha.
+ O sinal de ! impede o login até que você defina uma senha.
 
 4. Criar o diretório Home e definir permissões
 
