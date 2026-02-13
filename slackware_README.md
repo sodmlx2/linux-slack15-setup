@@ -19,6 +19,7 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 > **Exemplo:** `fulano:x:1001:100::/home/fulano:/bin/bash`
 >
 > **Nota:** O `x` indica que a senha está criptografada no arquivo `shadow`. O `100` é o GID padrão do grupo `users` no Slackware.
+>
 
 </details>
 
