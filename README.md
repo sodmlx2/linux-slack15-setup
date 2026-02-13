@@ -4,7 +4,7 @@ Este repositório contém guias e ferramentas para automação e compilação de
 
 ## Índice de Estudos.
 
-1.  **[welcome to the zion archive](slackware_README.md#user-identity)**
+1.  **[Bem-vindo ao Arquivo de Sião](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
 2.  **[O rastreador de conteúdo estúpido](slackware_README.md#basic-git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.
