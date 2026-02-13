@@ -14,8 +14,7 @@
 ---
 
 ### Comando de Referência
-```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
+
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
