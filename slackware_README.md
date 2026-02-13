@@ -25,7 +25,7 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 <details>
-<summary>Clique para ver o exemplo do group</summary>
+<summary>🔥 </summary>
 
 > **Exemplo:** `fulano:x:1001:`
 > 
@@ -39,7 +39,7 @@ Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for us
 Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
 
 <details>
-<summary>Clique para ver o exemplo do shadow</summary>
+<summary>🔥 </summary>
 
 > **Adicione:** `fulano:!:19000:0:99999:7:::`
 >
@@ -49,7 +49,7 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 
 ---
 
-### 📂 Resumo de Arquivos
+### Resumo.
 
 | Arquivo | Função Básica | O que fazer nele |
 | :--- | :--- | :--- |
@@ -61,26 +61,7 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 
 ---
 
-### 🚀 Atalho (Comando Automatizado)
-```bash
-useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
-Criar o diretório Home e definir permissões
-
-Agora você precisa criar o espaço físico para os arquivos do usuário e entregar a "chave" para ele.
-   
-```bash
-mkdir /home/fulano && cp -R /etc/skel/. /home/fulano/      
-```
-```bash
-chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
-```
----
-
-
----
-
 ### Comando de Referência.
-
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
