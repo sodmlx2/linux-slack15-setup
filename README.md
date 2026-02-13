@@ -23,11 +23,9 @@ Este repositório contém um guia basico de estudo linux e uma ferramenta para a
 9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
     * Ferramentas para análise de segurança e binários.
 
-# Slackware Kernel Compilation
+## Compilação do Linux Kernel.
 
 Este projeto fornece um script Bash robusto (`slack_linux.sh`) desenvolvido para automatizar o processo de compilação, instalação, backup e empacotamento de um kernel Linux customizado em sistemas Slackware.
-
----
 
 ## Funcionalidades
 
@@ -46,16 +44,12 @@ Este projeto fornece um script Bash robusto (`slack_linux.sh`) desenvolvido para
 - **Atualização do Bootloader**:
   Detecta e solicita a atualização do seu bootloader (LILO, ELILO ou GRUB) para garantir que o novo kernel seja reconhecido.
 
----
-
 ## Pré-requisitos
 
 * **Privilégios de Root**: O script deve ser executado como root (ou com `sudo`) para gravar em `/boot`, `/lib/modules` e atualizar bootloaders.
 * **Código-Fonte do Kernel**: Você deve ter o código-fonte do kernel Linux baixado e extraído (ex: em `/usr/src/linux`).
 * **Ferramentas de Build**: Certifique-se de ter as ferramentas de desenvolvimento necessárias (gcc, make, ncurses, etc.).
 * **Ferramentas Slackware**: Requer ferramentas padrão do Slackware, como o `mkinitrd`.
-
----
 
 ## Uso
 
