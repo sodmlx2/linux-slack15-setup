@@ -6,7 +6,7 @@ Este repositório contém guias e ferramentas para automação e compilação de
 
 1.  **[Bem-vindo ao Arquivo de Sião](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
-2.  **[O rastreador de conteúdo estúpido](slackware_README.md#basic-git-configuration)**
+2.  **[O rastreador de conteúdo estúpido](slackware_README.md#git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.
 3.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
     * Criação de chaves Ed25519 e autenticação no GitHub.
