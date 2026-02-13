@@ -75,6 +75,11 @@ sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slac
 git config --global user.email "user@example.com"
 git config --global user.name "username"
 ```
+```bash
+# Assinar commits automaticamente.
+git config --global user.signingkey SEUIDGPG
+git config --global commit.gpgsign true
+```
 ---
 
 # Network Configuration.
