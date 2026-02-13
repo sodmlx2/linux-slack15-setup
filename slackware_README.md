@@ -3,7 +3,19 @@
 
 ## User Identity
 
-No Slackware, a gestão de usuários é "raiz": não há camadas complexas de abstração. O comando useradd define não apenas quem você é, mas o que seu código pode tocar no hardware.
+| Arquivo | Função Básica | O que fazer nele |
+| :--- | :--- | :--- |
+| `/etc/passwd` | Registro Geral | Adicionar linha com Nome, UID, GID e Home. |
+| `/etc/shadow` | Cofre de Senhas | Onde o `passwd` salva a senha criptografada. |
+| `/etc/group` | Clubes do Sistema | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
+| `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
+| `/etc/skel/` | Modelo de Casa | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
+
+---
+
+### Comando de Referência
+```bash
+useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 ```
