@@ -7,7 +7,9 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 ### Editar o arquivo `/etc/passwd`
 
-Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário. A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
+Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
+
+A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 
 <details>
 <summary>🔥</summary>
