@@ -21,14 +21,13 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 
 </details>
 
----
-
 ### Editar o arquivo `/etc/group`
 Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá.
 
 Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 <details>
+  
 <summary>🔥 </summary>
 
 > **Exemplo:** `fulano:x:1001:`
@@ -37,12 +36,11 @@ Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 </details>
 
----
-
 ### Editar o arquivo `/etc/shadow`
 Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
 
 <details>
+  
 <summary>🔥 </summary>
 
 > **Adicione:** `fulano:!:19000:0:99999:7:::`
@@ -50,8 +48,6 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 > **Nota:** O sinal de `!` impede o login até que você defina uma senha real usando o comando `passwd`.
 
 </details>
-
----
 
 ### Resumo.
 
@@ -62,6 +58,8 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 | `/etc/group` | Grupos | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
 | `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
 | `/etc/skel/` | Esqueleto | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
+
+---
 
 ### Comando de Referência.
 ```bash
