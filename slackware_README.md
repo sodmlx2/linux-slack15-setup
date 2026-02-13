@@ -3,7 +3,7 @@
 
 ## User Identity
 
-## 1. Editar o arquivo /etc/passwd
+1. Editar o arquivo /etc/passwd
 
 Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
 
@@ -13,7 +13,7 @@ A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
 
 Nota: O x indica que a senha está criptografada no arquivo shadow. O 100 geralmente é o GID do grupo users no Slackware.
 
-## 2. Editar o arquivo /etc/group
+2. Editar o arquivo /etc/group
 
 Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo users, apenas verifique se o GID coincide.
 
