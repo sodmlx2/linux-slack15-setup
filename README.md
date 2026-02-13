@@ -15,7 +15,7 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 5.  **[Atualizações de Sistema e Pacotes](slackware_README.md#system-updates--packages)**
     * Gestão de espelhos e upgrade de pacotes base do kernel.
 6.  **[Compilação do Kernel Slackware](slackware_README.md#slackware-kernel-compilation)**
-    * Uso do script `slack_linux_bkp.sh` e automação de builds.
+    * Uso do script `slack_linux.sh` e automação de builds.
 7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
     * Comandos específicos para módulos de armazenamento e HID.
 8.  **[Ajustes de Menu ELILO](slackware_README.md#adjusting-elilo-text-menu-support)**
