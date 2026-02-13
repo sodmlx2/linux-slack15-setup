@@ -21,14 +21,13 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 
 </details>
 
----
-
 ### Editar o arquivo `/etc/group`
 Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá.
 
 Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 <details>
+  
 <summary>🔥 </summary>
 
 > **Exemplo:** `fulano:x:1001:`
@@ -37,12 +36,11 @@ Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
 </details>
 
----
-
 ### Editar o arquivo `/etc/shadow`
 Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
 
 <details>
+  
 <summary>🔥 </summary>
 
 > **Adicione:** `fulano:!:19000:0:99999:7:::`
@@ -50,8 +48,6 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 > **Nota:** O sinal de `!` impede o login até que você defina uma senha real usando o comando `passwd`.
 
 </details>
-
----
 
 ### Resumo.
 
@@ -69,7 +65,7 @@ sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slac
 ```
 ---
 
-# Git Configuration.
+## Git Configuration.
 ```bash
 git config --global user.email "user@example.com"
 git config --global user.name "username"
@@ -95,87 +91,37 @@ git config --global core.autocrlf input
 ```
 ---
 
-# Network Configuration.
+## Network Configuration.
+
+O NetworkManager é um daemon focado em simplificar a configuração de rede.
+
+Sua função principal é tornar a conexão à internet e o gerenciamento de interfaces algo automático e prático.
+
 ```bash
 iwlist wlan0 scan | grep ESSID
 nmcli device wifi connect "ESSID" password "PASSWORD"
 ```
+---
 
-# System Updates & Packages.
+### Resumo.
+
+| Arquivo | Função Básica | O que fazer nele |
+| :--- | :--- | :--- |
+| `/etc/NetworkManager/NetworkManager.conf` | Configuração Global | Editar o comportamento do daemon e plugins de DNS. |
+| `/etc/NetworkManager/system-connections/` | Perfis de Rede | Armazenar arquivos .nmconnection com SSIDs e senhas. |
+| `/etc/NetworkManager/dispatcher.d/` | Automação | Colocar scripts que rodam quando a conexão sobe ou desce. |
+| `/etc/NetworkManager/conf.d/` | Configurações Extras | Adicionar fragmentos de configuração para personalização. |
+| `/var/lib/NetworkManager/` | Estado de Rede | Consultar leases de DHCP e o estado atual das conexões. |
+| `/etc/hostname` | Nome da Máquina | Definir o nome do host que será visto na rede. |
+
+---
+
+## System Updates & Packages.
 ```bash
 vim /etc/slackpkg/mirrors
 slackpkg update
 slackpkg upgrade kernel-generic kernel-huge kernel-modules kernel-headers kernel-source
 ```
-
-# Slackware Kernel Compilation.
-
-This project provides a robust Bash script (`slack_linux.sh`) designed to automate the process of compiling, installing, backing up, and packaging a custom Linux Kernel on Slackware systems.
-
-## Features.
-
-- **Automated Compilation**:  
-  Optionally runs `make bzImage` and `make modules` using all available CPU cores (`-j$(nproc)`).
-- **Safe Installation**:  
-  - Installs kernel binaries (`vmlinuz`, `System.map`, `.config`) to `/boot`.
-  - **Backups**: Automatically backs up existing files in `/boot` to `*.old` before overwriting (e.g., `vmlinuz` -> `vmlinuz.old`).
-  - **Symlinks**: Updates symbolic links (`/boot/vmlinuz`, `/boot/System.map`, etc.) to point to the new version.
-- **Module & Header Installation**:  
-  Installs modules and headers to a temporary directory for packaging, and modules to `/lib/modules` for the system.
-- **Initrd Generation**:  
-  Automatically detects the correct `mkinitrd` command for your system using `mkinitrd_command_generator.sh`, generates a new initrd, handles backups, and updates symlinks.
-- **Packaging**:  
-  Creates a `.tar.gz` archive containing the kernel, modules, headers, and initrd for easy distribution or backup.
-- **Bootloader Update**:  
-  Detects and prompts to update your bootloader (LILO, ELILO, or GRUB) to ensure the new kernel is recognized.
-
-## Prerequisites.
-
-- **Root Privileges**: The script must be run as root (or with `sudo`) to write to `/boot`, `/lib/modules`, and update bootloaders.
-- **Kernel Source**: You must have the Linux Kernel source code downloaded and extracted (e.g., in `/usr/src/linux`).
-- **Build Tools**: Ensure you have the necessary development tools installed (gcc, make, ncurses, etc.).
-- **Slackware Tools**: Requires standard Slackware tools like `mkinitrd`.
-
-## Usage.
-
-1.  **Navigate to the Kernel Source Directory**:
-    The script **must** be run from the root of your Linux kernel source tree.
-
-    ```bash
-    cd /usr/src/linux-6.x.x
-    ```
-
-2.  **Run the Script**:
-    Execute the script from that directory.
-
-    ```bash
-    /path/to/tools/slack_linux.sh
-    ```
-
-3.  **Interactive Prompts**:
-    The script will guide you through the process:
-    - **Project Name**: Enter a suffix for your kernel build (e.g., `custom`).
-    - **Compile?**: Choose whether to compile the kernel (`y/N`). If `y`, it will run `make bzImage` and `make modules`.
-    - **Bootloader**: At the end, it will ask if you want to update your bootloader (LILO/GRUB).
-
-## Output.
-
-- **System Directories**:
-    - `/boot/vmlinuz-generic-X.X.X`
-    - `/boot/System.map-X.X.X`
-    - `/boot/config-X.X.X`
-    - `/boot/initrd-X.X.X.gz`
-    - `/lib/modules/X.X.X/`
-- **Symlinks**:
-    - `/boot/vmlinuz` -> *New Kernel*
-    - `/boot/initrd.gz` -> *New Initrd*
-- **Backup Archive**:
-    - A tarball is created at `/tmp/kernel-dist-<VERSION>-<SUFFIX>.tar.gz` containing all installed files.
-
-## Safety Mechanisms.
-
-- **Dependency Check**: Verifies it is running in a valid kernel source tree.
-- **Backups**: Never blindly overwrites `/boot/vmlinuz` or `/boot/initrd.gz`. It moves existing files to `.old` first.
 
 # Generating SSH Keys.
 ```bash
