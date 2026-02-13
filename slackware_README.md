@@ -69,7 +69,7 @@ sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slac
 ```
 ---
 
-# Git Configuration.
+## Git Configuration.
 ```bash
 git config --global user.email "user@example.com"
 git config --global user.name "username"
@@ -95,13 +95,13 @@ git config --global core.autocrlf input
 ```
 ---
 
-# Network Configuration.
+## Network Configuration.
 ```bash
 iwlist wlan0 scan | grep ESSID
 nmcli device wifi connect "ESSID" password "PASSWORD"
 ```
 
-# System Updates & Packages.
+## System Updates & Packages.
 ```bash
 vim /etc/slackpkg/mirrors
 slackpkg update
