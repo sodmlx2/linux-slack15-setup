@@ -23,16 +23,6 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
     * Ferramentas para análise de segurança e binários.
 
----
-
-## Tools `slack_linux_bkp.sh`
-
-* **Compilação Paralela**: Detecta núcleos automaticamente via `nproc`.
-* **Segurança**: Faz backup de `vmlinuz` e `initrd.gz` para `.old` antes de sobrescrever.
-* **Empacotamento**: Gera um `.tar.gz` contendo tudo (Kernel, Módulos, Headers e Config).
-
----
-
 ## Como Iniciar
 
 Para clonar e configurar seu ambiente:
@@ -41,11 +31,11 @@ cd $HOME && git clone https://github.com/sodmlx2/linux-slack15-setup.git
 ```
 
 ```bash
-cp linux-slack15-setup/tools/slack_linux_bkp.sh {path_of_new_kernel_compilation}
+cp linux-slack15-setup/tools/slack_linux.sh {path_of_new_kernel_compilation}
 ```
 
 ```bash
 # Exemplo.
 cp $HOME/linux-slack15-setup/tools/slack_linux_bkp.sh $HOME/linux
-$HOME/linux/slack_linux_bkp.sh
+$HOME/linux/slack_linux.sh
 ```
