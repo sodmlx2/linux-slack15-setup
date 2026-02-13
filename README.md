@@ -6,7 +6,7 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 1.  **[Criação de Usuário](slackware_README.md#user-identity)**
     * Setup rápido de usuário para lab com permissões de hardware.
-2.  **[Configuração Avançada do Git](slackware_README.md#basic-git-configuration)**
+2.  **[Configuração do Git](slackware_README.md#basic-git-configuration)**
     * Ajustes para Kernel Dev e performance em projetos C++.
 3.  **[Geração de Chaves SSH](slackware_README.md#generating-ssh-keys)**
     * Criação de chaves Ed25519 e autenticação no GitHub.
@@ -18,7 +18,7 @@ Este repositório contém guias e ferramentas para automação, compilação de 
     * Uso do script `slack_linux.sh` e automação de builds.
 7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
     * Comandos específicos para módulos de armazenamento e HID.
-8.  **[Ajustes de Menu ELILO](slackware_README.md#adjusting-elilo-text-menu-support)**
+8.  **[Ajustes de Bootloader](slackware_README.md#adjusting-elilo-text-menu-support)**
     * Ativação do suporte a menus de texto no boot EFI.
 9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
     * Ferramentas para análise de segurança e binários.
