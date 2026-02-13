@@ -5,15 +5,19 @@ Este repositório contém guias e ferramentas para automação, compilação de 
 
 ## User Identity
 
-Editar o arquivo /etc/passwd
+### Editar o arquivo `/etc/passwd`
 
-Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
+Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário. 
+A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 
-    A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
+<details>
+<summary>🔥 Clique aqui para ver o exemplo prático</summary>
 
-Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
+> **Exemplo:** `fulano:x:1001:100::/home/fulano:/bin/bash`
+>
+> **Nota:** O `x` indica que a senha está criptografada no arquivo `shadow`. O `100` é o GID padrão do grupo `users` no Slackware.
 
-Nota: O "X" indica que a senha está criptografada no arquivo shadow. O 100 é o GID do grupo users no Slackware.
+</details>
 
 Editar o arquivo /etc/group
 
