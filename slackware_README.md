@@ -19,20 +19,51 @@ A estrutura da linha é: `nome:senha:UID:GID:comentário:home:shell`
 > **Nota:** O `x` indica que a senha está criptografada no arquivo `shadow`. O `100` é o GID padrão do grupo `users` no Slackware.
 </details>
 
-Editar o arquivo /etc/group
+---
 
-    Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo users, apenas verifique se o GID coincide.
+### Editar o arquivo `/etc/group`
+Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo `users`, apenas verifique se o GID coincide.
 
-Exemplo: fulano:x:1001:
+<details>
+<summary>Clique para ver o exemplo do group</summary>
 
-Editar o arquivo /etc/shadow
+> **Exemplo:** `fulano:x:1001:`
+> 
+> **Dica:** Adicione o nome do usuário ao final de grupos existentes (como `wheel` ou `audio`) para dar permissões extras.
 
-    Este arquivo armazena a senha. Como você não tem a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
+</details>
 
-Adicione: fulano:!:19000:0:99999:7:::
+---
 
-    O sinal de ! impede o login até que você defina uma senha.
+### Editar o arquivo `/etc/shadow`
+Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
 
+<details>
+<summary>Clique para ver o exemplo do shadow</summary>
+
+> **Adicione:** `fulano:!:19000:0:99999:7:::`
+>
+> **Nota:** O sinal de `!` impede o login até que você defina uma senha real usando o comando `passwd`.
+
+</details>
+
+---
+
+### 📂 Resumo de Arquivos
+
+| Arquivo | Função Básica | O que fazer nele |
+| :--- | :--- | :--- |
+| `/etc/passwd` | Registro Geral | Adicionar linha com Nome, UID, GID e Home. |
+| `/etc/shadow` | Cofre de Senhas | Onde o `passwd` salva a senha criptografada. |
+| `/etc/group` | Clubes do Sistema | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
+| `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
+| `/etc/skel/` | Modelo de Casa | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
+
+---
+
+### 🚀 Atalho (Comando Automatizado)
+```bash
+useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
 Criar o diretório Home e definir permissões
 
 Agora você precisa criar o espaço físico para os arquivos do usuário e entregar a "chave" para ele.
@@ -45,13 +76,6 @@ chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
 ```
 ---
 
-| Arquivo | Função Básica | O que fazer nele |
-| :--- | :--- | :--- |
-| `/etc/passwd` | Registro Geral | Adicionar linha com Nome, UID, GID e Home. |
-| `/etc/shadow` | Cofre de Senhas | Onde o `passwd` salva a senha criptografada. |
-| `/etc/group` | Clubes do Sistema | Adicionar o usuário aos grupos (ex: `audio`, `wheel`). |
-| `/etc/gshadow` | Grupos Seguros | Versão protegida do arquivo de grupos (opcional). |
-| `/etc/skel/` | Modelo de Casa | Copiar arquivos padrão (`.bashrc`, etc) para a Home. |
 
 ---
 
