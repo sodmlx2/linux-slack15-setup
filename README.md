@@ -64,13 +64,6 @@ Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar 
     ```bash
     /caminho/para/o/script/slack_linux.sh
     ```
-
-3.  **Prompts Interativos**:
-    O script irá guiá-lo pelo processo:
-    - **Nome do Projeto**: Insira um sufixo para o build do kernel (ex: `custom`).
-    - **Compilar?**: Escolha se deseja compilar o kernel (`y/N`).
-    - **Bootloader**: Ao final, ele perguntará se deseja atualizar seu bootloader.
-
 ## Saída (Output)
 
 * **Diretórios do Sistema**:
