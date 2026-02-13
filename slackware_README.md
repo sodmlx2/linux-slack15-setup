@@ -3,7 +3,7 @@
 
 # Slackware Kernel Compilation.
 
-This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to automate the process of compiling, installing, backing up, and packaging a custom Linux Kernel on Slackware systems.
+This project provides a robust Bash script (`slack_linux.sh`) designed to automate the process of compiling, installing, backing up, and packaging a custom Linux Kernel on Slackware systems.
 
 ## Features.
 
@@ -42,7 +42,7 @@ This project provides a robust Bash script (`slack_linux_bkp.sh`) designed to au
     Execute the script from that directory.
 
     ```bash
-    /path/to/tools/slack_linux_bkp.sh
+    /path/to/tools/slack_linux.sh
     ```
 
 3.  **Interactive Prompts**:
