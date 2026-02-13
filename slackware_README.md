@@ -3,6 +3,43 @@
 
 ## User Identity
 
+* 1. Editar o arquivo /etc/passwd
+
+Abra o arquivo com um editor de texto e adicione uma linha para o novo usuário.
+
+A estrutura da linha é: nome:senha:UID:GID:comentário:home:shell
+
+    Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
+
+    Nota: O x indica que a senha está criptografada no arquivo shadow. O 100 geralmente é o GID do grupo users no Slackware.
+
+* 2. Editar o arquivo /etc/group
+
+Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo users, apenas verifique se o GID coincide.
+
+    Exemplo: fulano:x:1001:
+
+3. Editar o arquivo /etc/shadow
+
+Este arquivo armazena a senha. Como você não tem a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
+
+    Adicione: fulano:!:19000:0:99999:7:::
+
+    O sinal de ! impede o login até que você defina uma senha.
+
+4. Criar o diretório Home e definir permissões
+
+Agora você precisa criar o espaço físico para os arquivos do usuário e entregar a "chave" para ele.
+Bash
+
+```bash
+mkdir /home/fulano
+cp -R /etc/skel/. /home/fulano/      # Copia arquivos de perfil padrão
+chown -R 1001:100 /home/fulano       # Define o dono (use o UID:GID escolhido)
+chmod -R 700 /home/fulano
+```
+
+
 | Arquivo | Função Básica | O que fazer nele |
 | :--- | :--- | :--- |
 | `/etc/passwd` | Registro Geral | Adicionar linha com Nome, UID, GID e Home. |
