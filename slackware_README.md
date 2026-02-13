@@ -67,7 +67,6 @@ Este arquivo armazena a senha. Como você não terá a hash da senha de cabeça,
 ```bash
 sudo useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | sudo chpasswd && sudo chage -d 0 lab
 ```
-
 ---
 
 # Git Configuration.
@@ -79,6 +78,13 @@ git config --global user.name "username"
 # Assinar commits automaticamente.
 git config --global user.signingkey SEUIDGPG
 git config --global commit.gpgsign true
+```
+```bash
+# Configurando um servidor SMTP.
+git config --global sendemail.smtpserver smtp.gmail.com
+git config --global sendemail.smtpserverport 587
+git config --global sendemail.smtpencryption tls
+git config --global sendemail.smtpuser seu.email@gmail.com
 ```
 ---
 
