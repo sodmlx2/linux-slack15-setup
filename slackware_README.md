@@ -11,33 +11,33 @@
 
     Exemplo: fulano:x:1001:100::/home/fulano:/bin/bash
 
-Nota: O x indica que a senha está criptografada no arquivo shadow. O 100 geralmente é o GID do grupo users no Slackware.
+    Nota: O "X" indica que a senha está criptografada no arquivo shadow. O 100 é o GID do grupo users no Slackware.
 
 2. Editar o arquivo /etc/group
 
-Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo users, apenas verifique se o GID coincide.
+    Se quiser que o usuário tenha seu próprio grupo, crie uma linha lá. Se for usar o grupo users, apenas verifique se o GID coincide.
 
-    Exemplo: fulano:x:1001:
+        Exemplo: fulano:x:1001:
 
 3. Editar o arquivo /etc/shadow
 
-Este arquivo armazena a senha. Como você não tem a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
+    Este arquivo armazena a senha. Como você não tem a hash da senha de cabeça, adicione a linha com a senha bloqueada inicialmente.
 
-    Adicione: fulano:!:19000:0:99999:7:::
+        Adicione: fulano:!:19000:0:99999:7:::
 
- O sinal de ! impede o login até que você defina uma senha.
+   O sinal de ! impede o login até que você defina uma senha.
 
 4. Criar o diretório Home e definir permissões
 
-Agora você precisa criar o espaço físico para os arquivos do usuário e entregar a "chave" para ele.
-Bash
-
+    Agora você precisa criar o espaço físico para os arquivos do usuário e entregar a "chave" para ele.
+   
 ```bash
 mkdir /home/fulano && cp -R /etc/skel/. /home/fulano/      
 ```
 ```bash
 chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
 ```
+---
 
 | Arquivo | Função Básica | O que fazer nele |
 | :--- | :--- | :--- |
@@ -49,7 +49,7 @@ chown -R 1001:100 /home/fulano && chmod -R 700 /home/fulano
 
 ---
 
-### Comando de Referência
+### Comando de Referência.
 
 ```bash
 useradd -m -g users -G wheel,audio,video -s /bin/bash lab && echo "lab:slackware" | chpasswd && chage -d 0 lab
