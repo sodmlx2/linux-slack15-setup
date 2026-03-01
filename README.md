@@ -12,7 +12,6 @@ Este repositório contém um guia basico de estudo linux e uma ferramenta para a
 6.  **[Compilação do Kernel Slackware](README.md#compilação-do-linux-kernel)**
 7.  **[Geração de INITRD](slackware_README.md#generating-initrd)**
 8.  **[Ajustes de Bootloader](slackware_README.md#adjusting-elilo-text-menu-support)**
-9.  **[Forensic e DevSecOps](slackware_README.md#tools-for-forensic-and-devsecops)**
 
 ## Compilação do Linux Kernel.
 
