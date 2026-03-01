@@ -69,13 +69,6 @@ Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar 
 * **Arquivo de Backup**:
     * Um tarball é criado em `/tmp/kernel-dist-<VERSÃO>-<SUFIXO>.tar.gz` contendo todos os arquivos instalados.
 
-## Mecanismos de Segurança
-
-> [!IMPORTANT]
-> - **Verificação de Dependência**: Verifica se está rodando em uma árvore de fontes de kernel válida.
-> - **Backups**: Nunca sobrescreve cegamente `/boot/vmlinuz` ou `/boot/initrd.gz`. Ele move arquivos existentes para `.old` primeiro.
->
-> - 
 ## Executando o `slack_linux.sh`.
 
 Configurando o ambiente!
