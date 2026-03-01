@@ -151,4 +151,3 @@ cp /boot/initrd.gz /boot/efi/EFI/Slackware/initrd.gz
 cd /usr/share/doc/elilo-3.16/examples/textmenu_chooser/
 mv general.msg params.msg textmenu-message.msg /boot/efi/EFI/Slackware/
 ```
-# Tools for forensic and DevSecOps.
