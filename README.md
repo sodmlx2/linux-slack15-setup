@@ -48,6 +48,7 @@ Este projeto fornece um script (`slack_linux.sh`) desenvolvido para automatizar 
 
     ```bash
     cd /usr/src/linux-6.x.x
+    sudo chown -R lab:users /home/lab/repo/src/linux
     ```
 
 2.  **Execute o script**:
