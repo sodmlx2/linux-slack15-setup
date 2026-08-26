@@ -89,6 +89,12 @@ git config --global core.whitespace fix,space-before-tab,trailing-space
 # Garante que o Git não converta CRLF (Windows) para LF (Linux) de forma destrutiva
 git config --global core.autocrlf input
 ```
+
+```bash
+# Alterar a URL de um repositório remoto para suportar (SSH).
+git remote set-url origin git@github.com:$USER/$REPO
+```
+
 ---
 
 ## Network Configuration.
