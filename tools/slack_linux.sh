@@ -1,31 +1,27 @@
 #!/usr/bin/env bash
 
-set -e
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 
-echo -e "\n--- Linux Kernel Slackware ---"
+echo -e "\n--- Linux Kernel ---"
 
 #
 # Gathering info about the linux kernel.
 #
 if [ ! -f "Makefile" ] || [ ! -d "arch" ]; then
-    echo -e "\n[ERROR]: Execute this script inside the linux kernel -> ./linux/scripts/slack-kernel.sh\n"
+    echo -e "\n[ERROR]: Execute this script inside the linux kernel -> ./linux/slack-kernel.sh\n"
     exit 1
 fi
 
 K_VER=$(make -s kernelrelease)
-echo "[VERSION]: Version of this compilation: $K_VER"
 
-ARCH_RAW=$(uname -m)
-case $ARCH_RAW in
-    x86_64|i386|i686) ARCH_DIR="x86" ;;
-    *)                ARCH_DIR="$ARCH_RAW" ;;
-esac
+echo -e "[INFO]: Architecture of this Compilation: $K_VER"
 
-echo -e "[ARCH]: Architecture of this compilation: $ARCH_RAW"
-
+#
+# Creating the First Project!
+#
 read -r -p "> Project: " SUFIXO
 SUFIXO_CLEAN="${SUFIXO// /-}"
-DEST_DIR="/tmp/kernel-dist-${K_VER}-${SUFIXO_CLEAN}"
+DEST_DIR="/$HOME/kernel-dist-${K_VER}-${SUFIXO_CLEAN}"
 
 #
 # Create the folder of project compilation.
@@ -40,163 +36,117 @@ read -r -p "Do you want to compile the kernel? [y/N] " COMPILE_KERNEL
 
 if [[ "$COMPILE_KERNEL" =~ ^[Yy]$ ]]; then
 
+    # echo -e "\n[INFO]: Cleaning previous compilation files (make mrproper)..."
+    # make mrproper
+
+    # echo "[INFO] Updating copied configuration..."
+    # make olddefconfig
+
+    # echo -e "\n[INFO]: Opening menuconfig. Please save your changes and exit when done."
+    # make menuconfig
+
     # Calculate number of cores for parallel compilation.
     CORES=$(nproc)
 
-    # generating .config file with kernel configurations.
-    echo -e "\n[INFO]: Generating Config file."
-
-    # make localmodconfig
-    # make menuconfig
-
-    # Generated image of linux kernel.
+    # compiling.
     echo -e "[INFO]: Compiling Kernel (bzImage) with $CORES threads."
+
     make -j"$CORES" bzImage
 
-    # Compile modules of linux kernel.
     echo "[INFO]: Compiling Modules with $CORES threads."
+
     make -j"$CORES" modules
 
     # Update K_VER in case it changed (though usually determined by .config)
     K_VER=$(make -s kernelrelease)
+
     echo -e "[INFO]: Kernel version verified: $K_VER"
 fi
 
 #
-# Copying and Backup the Linux Kernel Files generated in process of compilation.
-#
-function install_kernel_file() {
-    local SOURCE_FILE="$1"
-    local DEST_NAME="$2"
-    local SYMLINK_NAME="$3"
-
-    if [ -f "$SOURCE_FILE" ]; then
-        local DEST_PATH="/boot/$DEST_NAME"
-
-        # Backup existing versioned file if it exists
-        if [ -f "$DEST_PATH" ]; then
-            echo -e "\n[INFO] Backing up existing $DEST_PATH to ${DEST_PATH}.old"
-            mv -v "$DEST_PATH" "${DEST_PATH}.old"
-        fi
-
-        echo -e "[INFO] Installing $SOURCE_FILE to /boot/$DEST_NAME and $DEST_DIR/boot/$DEST_NAME"
-        cp -v "$SOURCE_FILE" "$DEST_DIR/boot/$DEST_NAME"
-        cp -v "$SOURCE_FILE" "$DEST_PATH"
-
-        # Handle Symlink
-        if [ -n "$SYMLINK_NAME" ]; then
-            local LINK_PATH="/boot/$SYMLINK_NAME"
-            if [ -L "$LINK_PATH" ] || [ -f "$LINK_PATH" ]; then
-                # Backup the existing symlink/file to .old
-                # If it's a symlink, we just rename the link.
-                # If it's a file (e.g. old vmlinuz), we rename it too.
-                echo -e "[INFO] Backing up previous $SYMLINK_NAME to ${SYMLINK_NAME}.old"
-                mv -v "$LINK_PATH" "${LINK_PATH}.old"
-            fi
-            echo "[INFO] Creating symlink $LINK_PATH -> $DEST_NAME"
-            ln -sfv "$DEST_NAME" "$LINK_PATH"
-        fi
-    else
-        return 1
-    fi
-}
-
 # verify ouput of bzImage files.
-BZ_PATH="arch/$ARCH_DIR/boot/bzImage"
-if ! install_kernel_file "$BZ_PATH" "vmlinuz-generic-$K_VER" "vmlinuz"; then
+#
+BZ_PATH="arch/x86/boot/bzImage"
+if [ ! -f "$BZ_PATH" ]; then
     echo "[ERRO]: bzImage não encontrado em $BZ_PATH"
     exit 1
 fi
 
-# call function install_kernel_file!
-install_kernel_file "System.map" "System.map-$K_VER" "System.map" || echo "[WARN] System.map not found."
-install_kernel_file ".config" "config-$K_VER" "config" || echo "[WARN] .config not found."
-
-# install modules.
+#
+# Install Modules.
+#
 echo -e "\n[INFO] Instalando módulos na pasta temporária e no sistema..."
 make modules_install INSTALL_MOD_PATH="$DEST_DIR/modules"
 
-# copying modules.
-mkdir -p "/lib/modules/$K_VER"
-cp -a "$DEST_DIR/modules/lib/modules/$K_VER/." "/lib/modules/$K_VER/"
-depmod -a "$K_VER"
-
-# install headers.
-echo "[INFO] Installing the linux headers."
+echo -e "\n[INFO] Instalando módulos base e headers no root..."
+make modules_install
 make headers_install INSTALL_HDR_PATH="$DEST_DIR/headers"
 
-# generate initrd.
-if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
-    echo "[INFO] Generate initrd."
+#
+# Configure Slackware Boot Files.
+#
+echo -e "\n[INFO] Realizando backup e instalando novo Kernel no /boot..."
+# vmlinuz, System.map and config direct install logic
+for file in vmlinuz System.map config; do
+    if [ -f "/boot/$file" ] || [ -h "/boot/$file" ]; then
+        mv -vf "/boot/$file" "/boot/$file.old"
+    fi
+done
 
-    # Ensure K_VER is current relative to what we just built
-    # The initial K_VER might differ if config changed.
-    K_VER_CURRENT=$(make -s kernelrelease)
-    if [ "$K_VER" != "$K_VER_CURRENT" ]; then
-        echo "[WARN] Kernel version changed during build: '$K_VER' -> '$K_VER_CURRENT'. Updating..."
-        K_VER="$K_VER_CURRENT"
+#
+# Setup Basic Linux Kernel file for Booting and symbolic links.
+#
+cp -v "$BZ_PATH" "/boot/vmlinuz-generic-$K_VER"
+cp -v "System.map" "/boot/System.map-generic-$K_VER"
+cp -v ".config" "/boot/config-generic-$K_VER"
+
+ln -sfv "vmlinuz-generic-$K_VER" /boot/vmlinuz
+ln -sfv "System.map-generic-$K_VER" /boot/System.map
+ln -sfv "config-generic-$K_VER" /boot/config
+
+cp -a /boot/*"-generic-$K_VER" "$DEST_DIR/boot/"
+
+#
+# Generate initrd (Slackware).
+#
+if [ -x /usr/share/mkinitrd/mkinitrd_command_generator.sh ]; then
+    echo "[INFO] Gerando initrd com mkinitrd_command_generator..."
+
+    if [ -f "/boot/initrd.gz" ] || [ -h "/boot/initrd.gz" ]; then
+        mv -vf /boot/initrd.gz /boot/initrd.gz.old
     fi
 
-    # ensure we capture the line starting with mkinitrd
-    MK_CMD=$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -k "$K_VER" | grep "^mkinitrd" | head -n 1)
+    # Generates mkinitrd command based on newly installed kernel modules
+    MK_CMD=$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -k "$K_VER" | grep -m1 "^mkinitrd")
 
     if [ -n "$MK_CMD" ]; then
-        echo "[DEBUG] Detected mkinitrd command: $MK_CMD"
-
-        # Backup initrd.gz if it exists before generation
-        if [ -f "/boot/initrd.gz" ]; then
-             echo -e "[INFO] Backing up /boot/initrd.gz to /boot/initrd.gz.old"
-             mv -v /boot/initrd.gz /boot/initrd.gz.old
-        fi
-
         echo -e "[INFO] Running: $MK_CMD"
         if eval "$MK_CMD"; then
             echo "[INFO] mkinitrd completed successfully."
+
+            FINAL_INITRD_NAME="initrd-$K_VER.gz"
+            FINAL_INITRD_PATH="/boot/$FINAL_INITRD_NAME"
+
+            if [ -f "/boot/initrd.gz" ]; then
+                 mv -v "/boot/initrd.gz" "$FINAL_INITRD_PATH"
+                 ln -sfv "$FINAL_INITRD_NAME" /boot/initrd.gz
+                 cp -v "$FINAL_INITRD_PATH" "$DEST_DIR/boot/"
+            fi
         else
             echo "[ERROR] mkinitrd command failed."
-            exit 1
         fi
+    else
+        echo "[WARN] Could not generate mkinitrd command. Falling back to generic mkinitrd."
+        mkinitrd -c -k "$K_VER" -f ext4 -r /dev/sda1 -m ext4 -o /boot/initrd.gz
 
         FINAL_INITRD_NAME="initrd-$K_VER.gz"
         FINAL_INITRD_PATH="/boot/$FINAL_INITRD_NAME"
 
-        # Check where the output went.
-        DETECTED_INITRD=""
         if [ -f "/boot/initrd.gz" ]; then
-            DETECTED_INITRD="/boot/initrd.gz"
-        # Sometimes user config might point elsewhere, checking if MK_CMD specifies -o
-        elif [[ "$MK_CMD" =~ -o\ +([^ ]+) ]]; then
-            CUSTOM_OUT="${BASH_REMATCH[1]}"
-            if [ -f "$CUSTOM_OUT" ]; then
-                DETECTED_INITRD="$CUSTOM_OUT"
-            fi
+             mv -v "/boot/initrd.gz" "$FINAL_INITRD_PATH"
+             ln -sfv "$FINAL_INITRD_NAME" /boot/initrd.gz
+             cp -v "$FINAL_INITRD_PATH" "$DEST_DIR/boot/"
         fi
-
-        if [ -n "$DETECTED_INITRD" ]; then
-             echo "[INFO] Found generated initrd at: $DETECTED_INITRD"
-             # If exact match to final path, no move needed (but logic handles it)
-             if [ "$DETECTED_INITRD" != "$FINAL_INITRD_PATH" ]; then
-                 mv -v "$DETECTED_INITRD" "$FINAL_INITRD_PATH"
-             fi
-        else
-             echo "[ERROR] Could not find the generated initrd file! Checked /boot/initrd.gz and command output."
-             echo "[DEBUG] Directory listing of /boot:"
-             ls -ld /boot/initrd*
-        fi
-
-        if [ -f "$FINAL_INITRD_PATH" ]; then
-            cp -v "$FINAL_INITRD_PATH" "$DEST_DIR/boot/" >> logs2.txt
-
-            # Create symlink initrd.gz -> initrd-$K_VER.gz
-            echo -e "[INFO] Creating symlink /boot/initrd.gz -> $FINAL_INITRD_NAME"
-            ln -sfv "$FINAL_INITRD_NAME" /boot/initrd.gz >> logs2.txt
-
-            echo -e "[INFO] initrd integrado ao pacote."
-        else
-            echo -e "[AVISO]: initrd não encontrado em $FINAL_INITRD_PATH"
-        fi
-    else
-        echo "[WARN] Could not generate mkinitrd command. (Generator output might be empty or no modules found)"
     fi
 fi
 
@@ -204,49 +154,7 @@ echo -e "[INFO] Packing Linux Kernel Files."
 tar -czf "${DEST_DIR}.tar.gz" -C "$DEST_DIR" .
 
 #
-# Apply Bootloader Update.
-#
-echo -e "[INFO] Checking Bootloader..."
-
-#
-# Check for LILO.
-#
-if [ -f /etc/lilo.conf ] && [ -x "$(command -v lilo)" ]; then
-    echo -e "[INFO] LILO detected."
-    read -r -p "Run 'lilo' to update bootloader? [y/N] " RUN_LILO
-    if [[ "$RUN_LILO" =~ ^[Yy]$ ]]; then
-        lilo
-    fi
-fi
-
-#
-# Check for ELILO (UEFI).
-#
-if [ -f /etc/elilo.conf ] && [ -x "$(command -v elilo)" ]; then
-    echo -e "[INFO] ELILO detected."
-    read -r -p "Run 'elilo' to update bootloader? [y/N] " RUN_ELILO
-    if [[ "$RUN_ELILO" =~ ^[Yy]$ ]]; then
-        elilo
-    fi
-fi
-
-#
-# Check for GRUB2.
-#
-if [ -d /boot/grub ]; then
-    if command -v update-grub > /dev/null; then
-        echo "[INFO] GRUB (update-grub) detected."
-	read -r -p "Run 'update-grub'? [y/N] " RUN_GRUB
-        [[ "$RUN_GRUB" =~ ^[Yy]$ ]] && update-grub
-    elif command -v grub-mkconfig > /dev/null; then
-	echo "[INFO] GRUB (grub-mkconfig) detected."
-	read -r -p "Run 'grub-mkconfig -o /boot/grub/grub.cfg'? [y/N] " RUN_GRUB
-	[[ "$RUN_GRUB" =~ ^[Yy]$ ]] && grub-mkconfig -o /boot/grub/grub.cfg
-    fi
-fi
-
-#
-# QEMU Testing.
+# QEMU Linux Lenovo INTEL.
 #
 if command -v qemu-system-x86_64 > /dev/null; then
     echo -e "\n[INFO] QEMU detected."
@@ -289,5 +197,3 @@ if command -v qemu-system-x86_64 > /dev/null; then
 else
     echo "[INFO] qemu-system-x86_64 not found. Skipping QEMU test."
 fi
-
-echo -e "\n[INFO] Done."
